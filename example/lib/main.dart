@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:html_editor_enhanced/html_editor.dart';
-import 'package:file_picker/file_picker.dart';
 
 void main() => runApp(HtmlEditorExampleApp());
 
@@ -71,35 +70,26 @@ class _HtmlEditorExampleState extends State<HtmlEditorExample> {
                 htmlEditorOptions: HtmlEditorOptions(
                   hint: 'Your text here...',
                   shouldEnsureVisible: true,
-                  //initialText: "<p>text content initial, if any</p>",
+                  initialText: '<p>text content initial, if any</p>',
                 ),
                 htmlToolbarOptions: HtmlToolbarOptions(
                   toolbarPosition: ToolbarPosition.aboveEditor, //by default
-                  toolbarType: ToolbarType.nativeScrollable, //by default
-                  onButtonPressed:
-                      (ButtonType type, bool? status, Function? updateStatus) {
-                    print(
-                        "button '${describeEnum(type)}' pressed, the current selected status is $status");
-                    return true;
-                  },
-                  onDropdownChanged: (DropdownType type, dynamic changed,
-                      Function(dynamic)? updateSelectedItem) {
-                    print(
-                        "dropdown '${describeEnum(type)}' changed to $changed");
-                    return true;
-                  },
-                  mediaLinkInsertInterceptor:
-                      (String url, InsertFileType type) {
-                    print(url);
-                    return true;
-                  },
-                  mediaUploadInterceptor:
-                      (PlatformFile file, InsertFileType type) async {
-                    print(file.name); //filename
-                    print(file.size); //size in bytes
-                    print(file.extension); //file extension (eg jpeg or mp4)
-                    return true;
-                  },
+                  toolbarType: ToolbarType.nativeGrid, //by default
+                  defaultToolbarButtons: [
+                    ParagraphButtons(
+                      caseConverter: false,
+                      increaseIndent: false,
+                      decreaseIndent: false,
+                      lineHeight: false,
+                      textDirection: false,
+                    ),
+                    FontSettingButtons(fontSizeUnit: false),
+                    FontButtons(
+                        clearAll: false,
+                        subscript: false,
+                        superscript: false,
+                        strikethrough: false),
+                  ],
                 ),
                 otherOptions: OtherOptions(height: 550),
                 callbacks: Callbacks(onBeforeCommand: (String? currentHtml) {
